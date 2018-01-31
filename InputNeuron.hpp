@@ -2,6 +2,7 @@
 #define INPUTNEURON_H
 
 #include <Neuron.hpp>
+
 namespace NeuralNetwork
 {
     class InputNeuron : public Neuron

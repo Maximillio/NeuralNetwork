@@ -5,8 +5,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     Neuron.cpp \
-    InputNeuron.cpp
+    InputNeuron.cpp \
+    MiddleNeuron.cpp
 
 HEADERS += \
     Neuron.hpp \
-    InputNeuron.hpp
+    InputNeuron.hpp \
+    MiddleNeuron.hpp
