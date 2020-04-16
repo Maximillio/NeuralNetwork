@@ -4,11 +4,21 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    Neuron.cpp \
-    InputNeuron.cpp \
-    MiddleNeuron.cpp
+    Layers/Layer.cpp \
+    Links/Link.cpp \
+    Network/Network.cpp \
+    Types/NeuronType.cpp \
+    Neurons/Neuron.cpp \
+    Neurons/InputNeuron.cpp \
+    Neurons/MiddleNeuron.cpp
 
 HEADERS += \
-    Neuron.hpp \
-    InputNeuron.hpp \
-    MiddleNeuron.hpp
+    Constants.hpp \
+    Interface/Printable.hpp \
+    Layers/Layer.hpp \
+    Links/Link.hpp \
+    Network/Network.hpp \
+    Types/NeuronType.hpp \
+    Neurons/Neuron.hpp \
+    Neurons/InputNeuron.hpp \
+    Neurons/MiddleNeuron.hpp
