@@ -1,6 +1,6 @@
 #include "Neurons/MiddleNeuron.hpp"
 #include "Links/Link.hpp"
-#include <strstream>
+#include <string>
 
 NeuralNetwork::MiddleNeuron::MiddleNeuron() noexcept {}
 
@@ -21,13 +21,23 @@ void NeuralNetwork::MiddleNeuron::addLinks(const std::list<std::shared_ptr<Link>
 
 std::string NeuralNetwork::MiddleNeuron::toString() const noexcept
 {
-    std::strstream stream;
-    stream << '|' <<"Value:" << mValue << '|' << std::endl;
+    std::string string;
+
+    string.append("|");
+    string.append("Value:");
+    string.append( std::to_string(mValue) );
+    string.append("|");
+    string.append("\r\n");
     for (auto link : mLinks)
     {
-        stream << '|' <<"Link weight:" << link->getWeight() << '|'<<std::endl;
+        string.append("|");
+        string.append("Link weight:");
+        string.append( std::to_string( link->getWeight() ) );
+        string.append("|");
+        string.append("\r\n");
     }
-    return stream.str();
+
+    return string;
 }
 
 void NeuralNetwork::MiddleNeuron::readLinksValues() noexcept

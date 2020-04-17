@@ -2,7 +2,7 @@
 #include "Layers/Layer.hpp"
 #include "Neurons/Neuron.hpp"
 #include "Neurons/MiddleNeuron.hpp"
-#include <strstream>
+#include <string>
 
 NeuralNetwork::Network::Network() noexcept {}
 
@@ -53,23 +53,36 @@ bool NeuralNetwork::Network::addOutputLayer(std::shared_ptr<NeuralNetwork::Layer
 
 std::string NeuralNetwork::Network::toString() const noexcept
 {
-    std::strstream stream;
+    std::string string;
 
     int index = 0;
-    stream << "Input layer:" << std::endl;
-    stream << index++ << '.'<< std::endl;
-    stream << mInputLayer->toString();
-    stream << "Middle layers:" << std::endl;
+    string.append("Input layer:");
+    string.append("\r\n");
+    string.append( std::to_string(index++) );
+    string.append(".");
+    string.append("\r\n");
+    string.append( mInputLayer->toString() );
+    string.append("\r\n");
+    string.append("Middle layers:");
+    string.append("\r\n");
+
     for (auto layer : mMiddleLayers)
     {
-        stream << index++ << '.'<< std::endl;
-        stream << layer->toString();
+        string.append( std::to_string(index++) );
+        string.append(".");
+        string.append("\r\n");
+        string.append( layer->toString() );
+        string.append("\r\n");
     }
-    stream << "Output layer:" << std::endl;
-    stream << index++ << '.'<< std::endl;
-    stream << mOutputLayer->toString();
+    string.append("Output layer:");
+    string.append("\r\n");
+    string.append( std::to_string(index++) );
+    string.append(".");
+    string.append("\r\n");
+    string.append( mOutputLayer->toString() );
+    string.append("\r\n");
 
-    return stream.str();
+    return string;
 }
 
 void NeuralNetwork::Network::connectLayers(std::shared_ptr<NeuralNetwork::Layer> previousLayer, std::shared_ptr<NeuralNetwork::Layer> nextLayer) noexcept

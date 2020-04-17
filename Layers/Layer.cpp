@@ -2,7 +2,7 @@
 #include "Neurons/Neuron.hpp"
 #include "Links/Link.hpp"
 #include <random>
-#include <strstream>
+#include <string>
 
 NeuralNetwork::Layer::Layer() noexcept {}
 
@@ -21,7 +21,7 @@ std::list<std::shared_ptr<NeuralNetwork::Link> > NeuralNetwork::Layer::getLinks(
     std::list<std::shared_ptr<Link>> links;
     for (auto neuron : mNeurons)
     {
-        links.push_back( std::make_shared<Link>(neuron, static_cast<double>(rand()%100)/100.0) );
+        links.push_back( std::make_shared<Link>(neuron, static_cast<double>(rand()%10000)/10000.0) );
     }
     return links;
 }
@@ -33,10 +33,12 @@ const std::list<std::shared_ptr<NeuralNetwork::Neuron> >& NeuralNetwork::Layer::
 
 std::string NeuralNetwork::Layer::toString() const noexcept
 {
-    std::strstream stream;
+    std::string string;
+
     for (auto neuron : mNeurons)
     {
-        stream << neuron->toString();
+        string.append( neuron->toString() );
     }
-    return stream.str();
+
+    return string;
 }

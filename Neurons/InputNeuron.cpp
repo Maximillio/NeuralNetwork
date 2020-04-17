@@ -1,5 +1,5 @@
 #include "InputNeuron.hpp"
-#include <strstream>
+#include <string>
 
 NeuralNetwork::InputNeuron::InputNeuron() {}
 
@@ -12,9 +12,15 @@ NeuralNetwork::NeuronType NeuralNetwork::InputNeuron::getType() const noexcept
 
 std::string NeuralNetwork::InputNeuron::toString() const noexcept
 {
-    std::strstream stream;
-    stream << '|' <<"Value:" << mValue << '|' << std::endl;
-    return stream.str();
+    std::string string;
+
+    string.append("|");
+    string.append("Value:");
+    string.append( std::to_string(mValue) );
+    string.append("|");
+    string.append("\r\n");
+
+    return string;
 }
 
 void NeuralNetwork::InputNeuron::setValue(double value) noexcept
