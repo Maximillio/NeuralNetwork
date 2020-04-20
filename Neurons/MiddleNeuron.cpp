@@ -1,8 +1,15 @@
 #include "Neurons/MiddleNeuron.hpp"
 #include "Links/Link.hpp"
 #include <string>
+#include <math.h>
 
 NeuralNetwork::MiddleNeuron::MiddleNeuron() noexcept {}
+
+NeuralNetwork::MiddleNeuron::MiddleNeuron(const std::list<std::shared_ptr<NeuralNetwork::Link> >& links) noexcept
+    : mLinks(links) {}
+
+NeuralNetwork::MiddleNeuron::MiddleNeuron(std::list<std::shared_ptr<NeuralNetwork::Link> >&& links) noexcept
+    : mLinks( std::move(links) ) {}
 
 NeuralNetwork::NeuronType NeuralNetwork::MiddleNeuron::getType() const noexcept
 {
@@ -32,7 +39,10 @@ std::string NeuralNetwork::MiddleNeuron::toString() const noexcept
     {
         string.append("|");
         string.append("Link weight:");
-        string.append( std::to_string( link->getWeight() ) );
+        if (link != nullptr)
+        {
+            string.append( std::to_string( link->getWeight() ) );
+        }
         string.append("|");
         string.append("\r\n");
     }
@@ -45,7 +55,12 @@ void NeuralNetwork::MiddleNeuron::readLinksValues() noexcept
     mValue = 0;
     for (auto link : mLinks)
     {
-        mValue = link->getValue();
+        mValue += link->getValue();
     }
-    mValue /= static_cast<double>( mLinks.size() );
+    mValue = sigmaFunction(mValue);
+}
+
+double NeuralNetwork::MiddleNeuron::sigmaFunction(double value)
+{
+    return (1/(1+exp(-value)));
 }

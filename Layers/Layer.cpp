@@ -1,5 +1,6 @@
 #include "Layer.hpp"
 #include "Neurons/Neuron.hpp"
+#include "Neurons/MiddleNeuron.hpp"
 #include "Links/Link.hpp"
 #include <random>
 #include <string>
@@ -31,13 +32,42 @@ const std::list<std::shared_ptr<NeuralNetwork::Neuron> >& NeuralNetwork::Layer::
     return mNeurons;
 }
 
+bool NeuralNetwork::Layer::iterate() noexcept
+{
+    if ( !mNeurons.empty() )
+    {
+        bool isValid = true;
+        for (auto neuron : mNeurons)
+        {
+            if (neuron->getType() != NeuronType::Middle)
+            {
+                isValid = false;
+                break;
+            }
+        }
+        if (isValid)
+        {
+            for (auto neuron : mNeurons)
+            {
+                dynamic_cast<MiddleNeuron*>( neuron.get() )->readLinksValues();
+            }
+            return true;
+        }
+    }
+
+    return false;
+}
+
 std::string NeuralNetwork::Layer::toString() const noexcept
 {
     std::string string;
 
     for (auto neuron : mNeurons)
     {
-        string.append( neuron->toString() );
+        if (neuron != nullptr)
+        {
+            string.append( neuron->toString() );
+        }
     }
 
     return string;

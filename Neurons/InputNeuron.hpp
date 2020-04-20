@@ -8,8 +8,9 @@ namespace NeuralNetwork
     class InputNeuron : public Neuron
     {
     public:
-        InputNeuron();
-        ~InputNeuron() override;
+        InputNeuron() noexcept;
+        InputNeuron(double value) noexcept;
+        ~InputNeuron() noexcept override;
         NeuronType getType() const noexcept override;
         std::string toString() const noexcept override;
         void setValue(double value) noexcept;

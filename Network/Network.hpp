@@ -14,9 +14,14 @@ namespace NeuralNetwork
     public:
         Network() noexcept;
         bool addInputLayer(std::shared_ptr<Layer> inputLayer) noexcept;
-        bool addMiddleLayer(std::shared_ptr<Layer> middleLayer) noexcept;
-        bool addOutputLayer(std::shared_ptr<Layer> outputLayer) noexcept;
+        bool addMiddleLayer(std::shared_ptr<Layer> middleLayer, bool connectionRequired = true) noexcept;
+        bool addOutputLayer(std::shared_ptr<Layer> outputLayer, bool connectionRequired = true) noexcept;
+        const std::shared_ptr<Layer>& getInputLayer() const noexcept;
+        const std::list<std::shared_ptr<Layer>>& getMiddleLayers() const noexcept;
+        const std::shared_ptr<Layer>& getOutputLayer() const noexcept;
+        bool setInputValues(std::list<double> values) noexcept;
         std::string toString() const noexcept override;
+        bool iterate() noexcept;
     private:
         void connectLayers(std::shared_ptr<Layer> previousLayer, std::shared_ptr<Layer> nextLayer) noexcept;
     private:

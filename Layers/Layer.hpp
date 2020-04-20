@@ -18,6 +18,7 @@ namespace NeuralNetwork
         void addNeurons(const std::list<Neuron*>& neuron) noexcept;
         std::list<std::shared_ptr<Link>> getLinks() const;
         const std::list<std::shared_ptr<Neuron>>& getNeuronsList() const noexcept;
+        bool iterate() noexcept;
         std::string toString() const noexcept override;
     private:
         std::list<std::shared_ptr<Neuron>> mNeurons;

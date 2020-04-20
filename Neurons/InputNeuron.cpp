@@ -1,9 +1,12 @@
 #include "InputNeuron.hpp"
 #include <string>
 
-NeuralNetwork::InputNeuron::InputNeuron() {}
+NeuralNetwork::InputNeuron::InputNeuron() noexcept {}
 
-NeuralNetwork::InputNeuron::~InputNeuron() {}
+NeuralNetwork::InputNeuron::InputNeuron(double value) noexcept
+    : Neuron(value) {}
+
+NeuralNetwork::InputNeuron::~InputNeuron() noexcept {}
 
 NeuralNetwork::NeuronType NeuralNetwork::InputNeuron::getType() const noexcept
 {

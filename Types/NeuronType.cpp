@@ -18,6 +18,7 @@ std::string NeuralNetwork::toString(NeuralNetwork::NeuronType type)
         case NeuronType::MaxNeuron:
             return std::string(NeuralNetwork::Constants::Strings::Empty);
     }
+    return std::string();
 }
 
 NeuralNetwork::NeuronType NeuralNetwork::fromString(const std::string& type)

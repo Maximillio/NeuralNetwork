@@ -25,30 +25,71 @@ bool NeuralNetwork::Network::addInputLayer(std::shared_ptr<NeuralNetwork::Layer>
     return true;
 }
 
-bool NeuralNetwork::Network::addMiddleLayer(std::shared_ptr<NeuralNetwork::Layer> middleLayer) noexcept
+bool NeuralNetwork::Network::addMiddleLayer(std::shared_ptr<NeuralNetwork::Layer> middleLayer, bool connectionRequired) noexcept
 {
-    if ( !mMiddleLayers.empty() )
+    if (connectionRequired)
     {
-        connectLayers( mMiddleLayers.back(), middleLayer);
-    }
-    else
-    {
-        connectLayers( mInputLayer, middleLayer);
+        if ( !mMiddleLayers.empty() )
+        {
+            connectLayers( mMiddleLayers.back(), middleLayer);
+        }
+        else
+        {
+            connectLayers( mInputLayer, middleLayer);
+        }
     }
     mMiddleLayers.push_back(middleLayer);
 
     return true;
 }
 
-bool NeuralNetwork::Network::addOutputLayer(std::shared_ptr<NeuralNetwork::Layer> outputLayer) noexcept
+bool NeuralNetwork::Network::addOutputLayer(std::shared_ptr<NeuralNetwork::Layer> outputLayer, bool connectionRequired) noexcept
 {
     if ( !mMiddleLayers.empty() )
     {
-        connectLayers(mMiddleLayers.back(), outputLayer);
+        if (connectionRequired)
+        {
+            connectLayers(mMiddleLayers.back(), outputLayer);
+        }
         mOutputLayer = outputLayer;
         return true;
     }
     return false;
+}
+
+const std::shared_ptr<NeuralNetwork::Layer>& NeuralNetwork::Network::getInputLayer() const noexcept
+{
+    return mInputLayer;
+}
+
+const std::list<std::shared_ptr<NeuralNetwork::Layer>>& NeuralNetwork::Network::getMiddleLayers() const noexcept
+{
+    return mMiddleLayers;
+}
+
+const std::shared_ptr<NeuralNetwork::Layer>& NeuralNetwork::Network::getOutputLayer() const noexcept
+{
+    return mOutputLayer;
+}
+
+bool NeuralNetwork::Network::setInputValues(std::list<double> values) noexcept
+{
+    if ( values.empty() ) return false;
+    if (mInputLayer == nullptr) return false;
+    if ( mInputLayer->getNeuronsList().empty() ) return false;
+
+    auto valuesIter = values.cbegin();
+    for ( auto neuron : mInputLayer->getNeuronsList() )
+    {
+        double value = 0.0;
+        if ( valuesIter != values.cend() )
+        {
+            value = *valuesIter;
+            ++valuesIter;
+        }
+        neuron->setValue(value);
+    }
+    return true;
 }
 
 std::string NeuralNetwork::Network::toString() const noexcept
@@ -61,7 +102,10 @@ std::string NeuralNetwork::Network::toString() const noexcept
     string.append( std::to_string(index++) );
     string.append(".");
     string.append("\r\n");
-    string.append( mInputLayer->toString() );
+    if (mInputLayer != nullptr)
+    {
+        string.append( mInputLayer->toString() );
+    }
     string.append("\r\n");
     string.append("Middle layers:");
     string.append("\r\n");
@@ -71,7 +115,10 @@ std::string NeuralNetwork::Network::toString() const noexcept
         string.append( std::to_string(index++) );
         string.append(".");
         string.append("\r\n");
-        string.append( layer->toString() );
+        if (layer != nullptr)
+        {
+            string.append( layer->toString() );
+        }
         string.append("\r\n");
     }
     string.append("Output layer:");
@@ -79,10 +126,24 @@ std::string NeuralNetwork::Network::toString() const noexcept
     string.append( std::to_string(index++) );
     string.append(".");
     string.append("\r\n");
-    string.append( mOutputLayer->toString() );
+    if (mOutputLayer != nullptr)
+    {
+        string.append( mOutputLayer->toString() );
+    }
     string.append("\r\n");
 
     return string;
+}
+
+bool NeuralNetwork::Network::iterate() noexcept
+{
+    bool isValid = true;
+    for (auto layer : mMiddleLayers)
+    {
+        isValid &= layer->iterate();
+    }
+    isValid &= mOutputLayer->iterate();
+    return isValid;
 }
 
 void NeuralNetwork::Network::connectLayers(std::shared_ptr<NeuralNetwork::Layer> previousLayer, std::shared_ptr<NeuralNetwork::Layer> nextLayer) noexcept
